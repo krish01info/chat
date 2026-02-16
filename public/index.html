@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Realtime Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/index.css">
+    <!-- QR scanner library for camera-based joining -->
+    <script src="https://unpkg.com/html5-qrcode" defer></script>
+
+
+</head>
+
+<body>
+
+<div id="appLayout">
+    <!-- Left sidebar: people you're connected with -->
+    <aside id="sidebar">
+        <!-- User Profile at top of sidebar -->
+        <div class="sidebar-profile">
+            <img id="avatar" alt="Your avatar"/>
+            <span id="username"></span>
+        </div>
+
+        <h3>Chats</h3>
+        <ul id="conversationList"></ul>
+    </aside>
+
+    <main id="chatContainer">
+        <header class="chat-header">
+            <button type="button" id="sidebarToggle" class="sidebar-toggle" title="Toggle menu">☰</button>
+            <div class="header-left">
+                <h2 id="chatHeaderName">Select a chat</h2>
+            </div>
+            <div class="header-right">
+                <button type="button" id="headerVideoBtn" class="header-icon-btn" title="Video call">
+                    <span class="icon">📹</span>
+                </button>
+                <button type="button" id="headerDisconnectBtn" class="header-icon-btn disconnect" title="Disconnect">
+                    <span class="icon">📞</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 🔥 IMPORTANT -->
+        <div id="messages"></div>
+
+
+    <!-- INPUT BAR -->
+    <div id="inputArea">
+        <div class="input-row">
+            <button type="button" id="attachBtn" class="attach-btn" title="Attach">📎</button>
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Type a message..."
+                autocomplete="off"
+            >
+            <button id="sendButton">Send</button>
+        </div>
+        <!-- WhatsApp-style attach menu (hidden by default) -->
+        <div id="attachMenu" class="attach-menu">
+            <button type="button" data-attach="image" title="Photo"><span class="attach-icon">🖼️</span> Photo</button>
+            <button type="button" data-attach="video" title="Video"><span class="attach-icon">🎬</span> Video</button>
+            <button type="button" data-attach="document" title="Document"><span class="attach-icon">📄</span> Document</button>
+        </div>
+        <!-- Hidden file inputs for each type -->
+        <input type="file" id="fileInputImage" accept="image/*" hidden/>
+        <input type="file" id="fileInputVideo" accept="video/*" hidden/>
+        <input type="file" id="fileInputDocument" accept="*/*" hidden/>
+    </div>
+    <div id="roomSection">
+        <div id="currentRoom">
+            <strong>My code:</strong> <span id="roomCodeText">loading...</span>
+        </div>
+        <div id="qrContainer">
+            <img id="qrImage" alt="Scan to join" />
+        </div>
+        <div id="joinByCode">
+            <input 
+                type="text"
+                id="roomCodeInput"
+                placeholder="Enter other person's code"
+                autocomplete="off"
+            />
+            <button id="joinRoomButton">Connect</button>
+        </div>
+        <div id="scanQrArea">
+            <button id="scanQrButton">Scan QR with camera</button>
+        </div>
+    </div>
+
+
+
+
+    </main>
+</div>
+
+<!-- Connection request modal (when someone wants to connect) -->
+<div id="requestModal" class="modal">
+    <div class="modal-content">
+        <p id="requestMessage"></p>
+        <div class="modal-actions">
+            <button id="acceptRequestBtn">Accept</button>
+            <button id="rejectRequestBtn">Decline</button>
+        </div>
+    </div>
+</div>
+
+<!-- Camera QR scan overlay -->
+<div id="qrScanOverlay">
+    <div id="qrScanInner">
+        <div id="qrScanHeader">
+            <strong>Scan room QR</strong>
+            <button id="qrScanClose">Close</button>
+        </div>
+        <div id="qr-reader"></div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+
+</body>
+</html>
